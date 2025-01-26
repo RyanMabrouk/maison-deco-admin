@@ -12,7 +12,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { Textarea } from '@/components/ui/textarea';
-import { updateOrder } from '@/hooks/data/orders/updateOrder/updateProduct';
+import { updateOrder } from '@/hooks/data/orders/updateOrder/updateOrder';
 
 export default function CancelReason() {
   const [cancel_reason, setCancel_reason] = useState<string>('');

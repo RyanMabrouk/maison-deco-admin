@@ -10,7 +10,7 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
-import { updateOrder } from '@/hooks/data/orders/updateOrder/updateProduct';
+import { updateOrder } from '@/hooks/data/orders/updateOrder/updateOrder';
 
 export default function ConfirmOrder() {
   const { orderId } = useParams();

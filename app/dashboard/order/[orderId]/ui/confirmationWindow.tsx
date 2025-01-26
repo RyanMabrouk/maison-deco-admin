@@ -10,7 +10,7 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
-import { deleteOrder } from '@/hooks/data/orders/deleteOrder/deleteProduct';
+import { deleteOrder } from '@/hooks/data/orders/deleteOrder/deleteOrder';
 
 export default function ConfirmationWindow({ orderId }: { orderId: string }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
