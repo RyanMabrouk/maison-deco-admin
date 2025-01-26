@@ -117,7 +117,7 @@ export default function Form() {
           .min(0, 'Le prix avant réduction ne peut pas être négatif'),
         discount: z.number().min(0, 'La réduction ne peut pas être négative'),
         is_published: z.boolean(),
-        status: z.string().min(1, 'Le statut est requis'),
+        status: z.string().min(1, 'Le statut est requis').optional(),
         discount_type: z.enum(['percentage', 'amount'])
       });
       const productData = {

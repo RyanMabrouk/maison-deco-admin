@@ -145,12 +145,12 @@ export default function Table() {
           columnState
         })}
         setSearchQuery={(searchQuery) => {
-          setFilter({
-            ...filter,
-            ilike: {
-              slug: searchQuery
-            }
-          });
+          // setFilter({
+          //   ...filter,
+          //   ilike: {
+          //     slug: searchQuery
+          //   }
+          // });
         }}
         setPage={(page) => {
           setFilter({
