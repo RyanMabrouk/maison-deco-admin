@@ -1,20 +1,22 @@
-'use client';
-import React from 'react';
-import { Player } from '@lottiefiles/react-lottie-player';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import Highlights from './ui/highlights';
+import PageContainer from '@/components/layout/page-container';
+import { PaginationProvider } from './context/usePagination';
 
-export default function Loading() {
+const breadcrumbItems = [
+  { title: 'Statistiques', link: '/dashboard' },
+  { title: 'Sélections spéciales', link: '/dashboard/highlights' }
+];
+
+export default function page() {
   return (
-    <div className=" flex min-h-screen flex-col items-center justify-center">
-      <Player
-        className=""
-        autoplay
-        loop
-        src="/under.json"
-        style={{ height: '20rem', width: '25rem' }}
-      />
-      <span className="-ml-12 text-3xl font-bold text-blue-900">
-        En construcción
-      </span>
-    </div>
+    <PageContainer>
+      <div className="space-y-2 bg-white p-5 shadow-md md:p-10">
+        <Breadcrumbs items={breadcrumbItems} />
+        <PaginationProvider>
+          <Highlights />
+        </PaginationProvider>
+      </div>
+    </PageContainer>
   );
 }

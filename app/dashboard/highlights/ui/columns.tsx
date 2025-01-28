@@ -1,10 +1,11 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
+import { Tables } from '@/types/database.types';
 
-export const columns: ColumnDef<any>[] = [
+export const columns: ColumnDef<Tables<'highlights'>>[] = [
   {
-    accessorKey: 'name',
-    header: 'الاسم الفعالية'
+    accessorKey: 'slug',
+    header: 'Slug'
   },
   {
     id: 'actions',

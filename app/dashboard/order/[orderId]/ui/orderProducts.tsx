@@ -140,13 +140,16 @@ export default function OrderProducts({
 
       <div className="mt-4 flex justify-between pt-4 text-lg font-semibold">
         <span>Total :</span>
-        <span>
-          {products.reduce(
-            (sum, product) =>
-              sum + product.quantity * product.price_after_discount,
-            0
-          )}{' '}
-          €
+        <span>{order.total_price}€</span>
+      </div>
+      <div className="mt-4 flex justify-between pt-4 text-lg font-semibold">
+        <span>Taxe :</span>
+        <span>{order.tax}€</span>
+      </div>
+      <div>
+        <span className="mt-4 flex justify-between pt-4 text-lg font-semibold">
+          <span>Frais de livraison :</span>
+          <span>{order.delivery_fee}€</span>
         </span>
       </div>
     </div>

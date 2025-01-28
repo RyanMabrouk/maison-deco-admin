@@ -9,13 +9,13 @@ import useProducts from '@/hooks/data/products/getProducts/useProducts';
 function Base() {
   const router = useRouter();
   const { filter } = usePagination();
-  const { data: books } = useProducts(filter);
+  const { data: products } = useProducts(filter);
 
   return (
     <>
       <div className="flex items-start justify-between">
         <Heading
-          title={`Produits (${books?.meta?.total_count || 0})`}
+          title={`Produits (${products?.meta?.total_count || 0})`}
           description="Liste de tous les produits disponibles"
         />{' '}
         <button

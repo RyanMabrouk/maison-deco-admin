@@ -12,9 +12,12 @@ import { Edit, MoreHorizontal } from 'lucide-react';
 import { useState } from 'react';
 import ConfirmationWindow from './confirmationWindow';
 import Link from 'next/link';
+import { highlightsQuery } from '@/hooks/data/highlights/getHighlights/highlightsQuery';
+import { QueryReturnType } from '@/types';
+import { Tables } from '@/types/database.types';
 
 interface CellActionProps {
-  data: any;
+  data: Tables<'highlights'>;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -34,19 +37,22 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">فتح القائمة</span>
+            <span className="sr-only">Ouvrir le menu</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="min-w-[5rem] max-w-[5rem]">
-          <DropdownMenuLabel>إجراءات</DropdownMenuLabel>
+        <DropdownMenuContent className="w-[5rem]">
           <DropdownMenuItem>
-            <Link href={`/dashboard/event?eventId=${data.id}`}>تحديث</Link>
-
-            <Edit className="mr-2 h-4 w-4" />
+            <Link
+              href={`/dashboard/highlight?slug=${data?.slug}`}
+              className="flex cursor-pointer items-center justify-start gap-2 p-1"
+            >
+              <Edit className="h-4 w-4" />
+              <div className="text-sm">Changer</div>
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild dir="rtl">
-            <ConfirmationWindow eventId={data.id} />
+          <DropdownMenuItem asChild>
+            <ConfirmationWindow slug={data?.slug ?? ''} />
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

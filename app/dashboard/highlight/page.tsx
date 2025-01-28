@@ -1,20 +1,28 @@
 'use client';
 import React from 'react';
-import { Player } from '@lottiefiles/react-lottie-player';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import PageContainer from '@/components/layout/page-container';
+import { useSearchParams } from 'next/navigation';
+import Highlight from './ui/highlight';
 
-export default function Loading() {
+export default function Page() {
+  const breadcrumbItems = [
+    { title: 'Statistiques', link: '/dashboard' },
+    { title: 'Sélections spéciales', link: '/dashboard/selections-speciales' }
+  ];
+  const searchParams = useSearchParams();
+  const slug = searchParams.get('slug');
   return (
-    <div className=" flex min-h-screen flex-col items-center justify-center">
-      <Player
-        className=""
-        autoplay
-        loop
-        src="/under.json"
-        style={{ height: '20rem', width: '25rem' }}
-      />
-      <span className="-ml-12 text-3xl font-bold text-blue-900">
-        En construcción
-      </span>
-    </div>
+    <PageContainer>
+      <div className="mx-auto   w-full max-w-[50rem] border bg-white p-5 shadow-md md:p-10 ">
+        <Breadcrumbs items={breadcrumbItems} />
+        <h1 className="mb-4 mt-5 text-2xl font-bold ">
+          {slug
+            ? 'Modifier la sélection spéciale'
+            : 'Ajouter une sélection spéciale'}
+        </h1>
+        <Highlight />
+      </div>
+    </PageContainer>
   );
 }

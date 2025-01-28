@@ -32,7 +32,7 @@ type ProductVariation = {
   color: string;
 };
 
-const languages: { lang: Enums<'languages_enum'>; label: string }[] = [
+export const languages: { lang: Enums<'languages_enum'>; label: string }[] = [
   {
     lang: 'fr',
     label: 'Français'
@@ -47,7 +47,6 @@ export default function Form() {
   const [errors, setErrors] = useState<IValidationErrors<
     TablesInsert<'products'>
   > | null>(null);
-  console.log('🚀 ~ Form ~ errors:', errors);
 
   const searchParams = useSearchParams();
   const formRef = useRef<HTMLFormElement>(null);
