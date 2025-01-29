@@ -32,13 +32,13 @@ export const navItems: NavItem[] = [
     label: 'orders'
   },
   {
-    title: 'highlights',
+    title: 'Sélections spéciales',
     href: '/dashboard/highlights',
     icon: 'Gem',
     label: 'highlights'
   },
   {
-    title: 'Ajouter une highlight',
+    title: 'Ajouter une Sélection',
     href: '/dashboard/highlight',
     icon: 'add',
     label: 'addHighlight'
@@ -55,20 +55,18 @@ export const navItems: NavItem[] = [
     icon: 'add',
     label: 'addCarousel'
   },
-
   {
-    title: 'FAQs',
-    href: '/dashboard/FAQs',
-    icon: 'MessageCircleIcon',
-    label: 'FAQs'
+    title: 'Coupons',
+    href: '/dashboard/coupons',
+    icon: 'Receipt',
+    label: 'coupons'
   },
   {
-    title: 'Ajouter une FAQ',
-    href: '/dashboard/FAQ',
+    title: 'Ajouter un coupons',
+    href: '/dashboard/coupon',
     icon: 'add',
-    label: 'addFAQ'
+    label: 'coupons'
   },
-
   {
     title: 'Déconnexion',
     href: '/',

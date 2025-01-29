@@ -30,6 +30,7 @@ import {
   PartyPopper,
   Pizza,
   Plus,
+  Receipt,
   Settings,
   ShoppingBasket,
   SunMedium,
@@ -80,6 +81,7 @@ export const Icons = {
   ImageIcon: ImageIcon,
   MessageCircleIcon: MessageCircleIcon,
   ShoppingBasket: ShoppingBasket,
+  Receipt: Receipt,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

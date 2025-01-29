@@ -9,6 +9,8 @@ import { SwitchGeneric } from '@/components/switchGeneric';
 import useProducts from '@/hooks/data/products/getProducts/useProducts';
 import { productsQuery } from '@/hooks/data/products/getProducts/productsQuery';
 import Image from 'next/image';
+import useCoupons from '@/hooks/data/coupons/get/useGet';
+import { Tables } from '@/types/database.types';
 
 export default function Table() {
   const { filter, setFilter } = usePagination();
@@ -16,84 +18,58 @@ export default function Table() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [columnState, setColumnState] = useState<
     {
-      accessorKey: string;
+      accessorKey: keyof Tables<'coupons'>;
       header: string;
       visible: boolean;
       cell?: ReturnType<typeof columns>[number]['cell'];
     }[]
   >([
     {
-      accessorKey: 'thumbnail',
-      header: 'Thumbnail',
+      accessorKey: 'code',
+      header: 'Code',
+      visible: true
+    },
+    {
+      accessorKey: 'active',
+      header: 'Actif',
       visible: true,
-      cell: ({ row }) => (
-        <div className="flex items-center">
-          <Image
-            src={row.original.thumbnail ?? '/noAvatar.jpg'}
-            alt=""
-            className="h-11 w-11 rounded-full"
-            width={64}
-            height={64}
-          />
-        </div>
-      )
-    },
-    {
-      accessorKey: 'is_published',
-      header: 'Is Published',
-      visible: true
-    },
-    {
-      accessorKey: 'status',
-      header: 'Status',
-      visible: true
-    },
-    {
-      accessorKey: 'slug',
-      header: 'Slug',
-      visible: true,
-      cell: ({ row }) => (
-        <div className=" text-left font-semibold hover:underline">
-          {row.original.slug}
-        </div>
-      )
-    },
-    {
-      accessorKey: 'price_after_discount',
-      header: 'Price',
-      visible: true
+      cell: ({ row }) => <div>{row.original.active ? 'Actif' : 'Inactif'}</div>
     },
     {
       accessorKey: 'discount',
-      header: 'Discount',
-      visible: true
+      header: 'Réduction',
+      visible: true,
+      cell: ({ row }) => (
+        <div>
+          {row.original.discount_type === 'amount'
+            ? -row.original.discount
+            : -row.original.discount + '%'}
+        </div>
+      )
     },
     {
-      accessorKey: 'discount_type',
-      header: 'Discount Type',
-      visible: true
-    },
-    {
-      accessorKey: 'stock',
-      header: 'Stock',
+      accessorKey: 'times_used',
+      header: "Nombre d'utilisations",
       visible: true
     },
     {
       accessorKey: 'created_at',
-      header: 'Created At',
+      header: 'Créé le',
       visible: true,
       cell: ({ row }) => (
-        <div>{new Date(row.original.created_at ?? '').toLocaleString()}</div>
+        <div className="flex w-full items-center justify-center">
+          {new Date(row.original.created_at ?? '').toLocaleString()}
+        </div>
       )
     }
   ]);
 
-  const { data: products, isLoading } = useProducts(filter);
+  const { data: coupons, isLoading } = useCoupons(filter);
 
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (products?.meta?.has_next_page) {
+    if (coupons?.meta?.has_next_page) {
       queryClient.prefetchQuery(
         productsQuery({
           ...filter,
@@ -104,7 +80,7 @@ export default function Table() {
         })
       );
     }
-  }, [filter.pagination.page, products?.meta?.has_next_page]);
+  }, [filter.pagination.page, coupons?.meta?.has_next_page]);
 
   const toggleColumnVisibility = (accessorKey: string) => {
     setColumnState((prevState) =>
@@ -134,8 +110,8 @@ export default function Table() {
       <Separator />
 
       <GenericTableData
-        searchColumnName="slug"
-        pagination_data={products}
+        searchColumnName="code"
+        pagination_data={coupons}
         columns={columns({
           selectedIds,
           setSelectedIds,
@@ -158,7 +134,7 @@ export default function Table() {
             }
           });
         }}
-        searchQuery={filter.ilike?.slug ?? ''}
+        searchQuery={filter.ilike?.code ?? ''}
         isLoading={isLoading}
       />
     </div>

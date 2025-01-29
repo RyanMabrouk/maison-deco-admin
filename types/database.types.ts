@@ -11,57 +11,45 @@ export type Database = {
     Tables: {
       carousels: {
         Row: {
-          button_link: string
           created_at: string | null
           id: string
-          img_url: string
+          redirect_url: string | null
           updated_at: string | null
         }
         Insert: {
-          button_link: string
           created_at?: string | null
           id?: string
-          img_url: string
+          redirect_url?: string | null
           updated_at?: string | null
         }
         Update: {
-          button_link?: string
           created_at?: string | null
           id?: string
-          img_url?: string
+          redirect_url?: string | null
           updated_at?: string | null
         }
         Relationships: []
       }
       carousels_translations: {
         Row: {
-          button_text: string
           carousel_item_id: string
           created_at: string | null
-          description: string
+          image_url: string | null
           lang: Database["public"]["Enums"]["languages_enum"]
-          sub_title: string
-          title: string
           updated_at: string | null
         }
         Insert: {
-          button_text: string
           carousel_item_id: string
           created_at?: string | null
-          description: string
+          image_url?: string | null
           lang: Database["public"]["Enums"]["languages_enum"]
-          sub_title: string
-          title: string
           updated_at?: string | null
         }
         Update: {
-          button_text?: string
           carousel_item_id?: string
           created_at?: string | null
-          description?: string
+          image_url?: string | null
           lang?: Database["public"]["Enums"]["languages_enum"]
-          sub_title?: string
-          title?: string
           updated_at?: string | null
         }
         Relationships: [
@@ -134,6 +122,69 @@ export type Database = {
             referencedColumns: ["slug"]
           },
         ]
+      }
+      coupon_products: {
+        Row: {
+          coupon_id: string
+          created_at: string
+          product_slug: string
+        }
+        Insert: {
+          coupon_id: string
+          created_at?: string
+          product_slug: string
+        }
+        Update: {
+          coupon_id?: string
+          created_at?: string
+          product_slug?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coupon_products_coupon_id_fkey"
+            columns: ["coupon_id"]
+            isOneToOne: false
+            referencedRelation: "coupons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "coupon_products_product_slug_fkey"
+            columns: ["product_slug"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
+      coupons: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          discount: number
+          discount_type: Database["public"]["Enums"]["discount_type"]
+          id: string
+          times_used: number
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          discount: number
+          discount_type: Database["public"]["Enums"]["discount_type"]
+          id?: string
+          times_used?: number
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          discount?: number
+          discount_type?: Database["public"]["Enums"]["discount_type"]
+          id?: string
+          times_used?: number
+        }
+        Relationships: []
       }
       faq_translations: {
         Row: {

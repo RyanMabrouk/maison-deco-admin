@@ -109,6 +109,7 @@ export default function Form() {
       const slug = formData.get('slug') as string;
 
       const productDataSchema = z.object({
+        size: z.array(z.string()).min(1, 'La taille est requise'),
         thumbnail: z.string().min(1, 'La miniature est requise'),
         stock: z.number().min(0, 'Le stock ne peut pas être négatif'),
         price_before_discount: z
@@ -120,6 +121,7 @@ export default function Form() {
         discount_type: z.enum(['percentage', 'amount'])
       });
       const productData = {
+        size: formData.getAll('size') as string[],
         thumbnail: product_thumbnail ?? '',
         stock: Number(formData.get('stock')) || 0,
         price_before_discount:
@@ -444,8 +446,10 @@ export default function Form() {
         ))}
       </div>
 
+      <AddSizes />
+
       <div className="">
-        <h2 className="mb-6 text-2xl font-bold text-gray-800">Variations</h2>
+        <h3 className="mb-6 text-2xl font-bold text-gray-800">Variations</h3>
         <div className="grid grid-cols-1 gap-6">
           {variations.map((variation, index) => (
             <div key={variation.id} className="mb-10">
@@ -508,6 +512,64 @@ export default function Form() {
           : 'Ajouter un produit'}
       </button>
     </form>
+  );
+}
+
+function AddSizes() {
+  const searchParams = useSearchParams();
+  const productId = searchParams.get('productId');
+  const { data: product } = useProductById(String(productId));
+  const [sizes, setSizes] = useState<string[]>(product?.data?.size || []);
+  const addSize = () => {
+    setSizes((prev) => [...prev, '']);
+  };
+  const removeSize = (index: number) => {
+    setSizes((prev) => prev.filter((_, i) => i !== index));
+  };
+  const handleSizeChange = (index: number, value: string) => {
+    const newSizes = [...sizes];
+    newSizes[index] = value;
+    setSizes(newSizes);
+  };
+  useEffect(() => {
+    if (product?.data?.size?.length) {
+      setSizes(product?.data?.size);
+    }
+  }, [product?.data?.size?.length]);
+  return (
+    <div>
+      <h3 className="mb-6 text-2xl font-bold text-gray-800">Tailles</h3>
+      <div className="flex flex-wrap gap-2">
+        {sizes.map((size, index) => (
+          <div key={index} className="flex items-center gap-2">
+            <input
+              type="text"
+              name={`size`}
+              value={size}
+              onChange={(e) => handleSizeChange(index, e.target.value)}
+              className="w-32 rounded-sm border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-color2"
+              placeholder="Entrez la taille"
+            />
+            <button
+              type="button"
+              onClick={() => removeSize(index)}
+              className="text-red-500 hover:text-red-700"
+            >
+              &times;
+            </button>
+          </div>
+        ))}
+      </div>
+      <Button
+        type="button"
+        onClick={addSize}
+        // className="hover:bg-color2-dark mt-2 rounded bg-color2 px-3 py-1 text-white"
+        variant={'secondary'}
+        className="mt-8"
+      >
+        Ajouter une taille
+      </Button>
+    </div>
   );
 }
 

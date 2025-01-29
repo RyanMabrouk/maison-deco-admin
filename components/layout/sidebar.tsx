@@ -9,7 +9,8 @@ import {
   ClipboardList,
   ShoppingBasket,
   MessageCircleIcon,
-  Gem
+  Gem,
+  Receipt
 } from 'lucide-react';
 import { DashboardNav } from '@/components/dashboard-nav';
 import { navItems } from '@/constants/data';
@@ -49,17 +50,15 @@ export default function Sidebar({ className }: SidebarProps) {
       ),
       icon: <Gem />
     },
+    Coupons: {
+      items: navItems.filter((item) => item.label === 'coupons'),
+      icon: <Receipt />
+    },
     Carousels: {
       items: navItems.filter(
         (item) => item.label === 'carousels' || item.label === 'addCarousel'
       ),
       icon: <ImageIcon />
-    },
-    FQAs: {
-      items: navItems.filter(
-        (item) => item.label === 'FAQs' || item.label === 'addFAQ'
-      ),
-      icon: <MessageCircleIcon />
     }
   };
 

@@ -1,6 +1,8 @@
 'use client';
+import useOrderById from '@/hooks/data/orders/getOrdersById/useById';
 import useUser from '@/hooks/data/users/getUserById/useUserById';
 import Image from 'next/image';
+import { useParams } from 'next/navigation';
 import React from 'react';
 
 type CustomerDetailsProps = {
@@ -9,6 +11,8 @@ type CustomerDetailsProps = {
 
 export default function CustomerDetails({ id }: CustomerDetailsProps) {
   const { data: customer } = useUser(id);
+  const { orderId } = useParams();
+  const { data: order } = useOrderById(String(orderId));
 
   return (
     <div className=" flex  flex-col gap-6 rounded-lg bg-white p-6 shadow-lg">
@@ -35,8 +39,8 @@ export default function CustomerDetails({ id }: CustomerDetailsProps) {
           Informations de contact
         </h3>
         <div className="space-y-2">
-          <div className="flex items-center">
-            <span className="mr-2 text-gray-600">Email :</span>
+          <div className="mt-2 flex items-center">
+            <span className="mr-2 text-nowrap text-gray-600">Email :</span>
             <span className="text-gray-800">{customer?.data?.email}</span>
           </div>
           <div className="flex items-center">
@@ -44,6 +48,20 @@ export default function CustomerDetails({ id }: CustomerDetailsProps) {
             <span className="text-gray-800">{customer?.data?.phone}</span>
           </div>
         </div>
+        <div className="mt-2">
+          {order?.data?.bill_url ? (
+            <a
+              href={order.data.bill_url}
+              download
+              target="_blank"
+              className="text-blue-500 underline hover:text-blue-700"
+            >
+              Télécharger la facture
+            </a>
+          ) : (
+            <span className="text-gray-400">Aucune facture disponible</span>
+          )}
+        </div>{' '}
       </div>
     </div>
   );
