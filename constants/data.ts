@@ -50,12 +50,6 @@ export const navItems: NavItem[] = [
     label: 'carousels'
   },
   {
-    title: 'Ajouter une carousel',
-    href: '/dashboard/carousel',
-    icon: 'add',
-    label: 'addCarousel'
-  },
-  {
     title: 'Coupons',
     href: '/dashboard/coupons',
     icon: 'Receipt',

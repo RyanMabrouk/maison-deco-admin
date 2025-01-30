@@ -1,20 +1,28 @@
 'use client';
 import React from 'react';
-import { Player } from '@lottiefiles/react-lottie-player';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import PageContainer from '@/components/layout/page-container';
+import Form from './ui/form';
+import { useSearchParams } from 'next/navigation';
 
-export default function Loading() {
+export default function Page() {
+  const breadcrumbItems = [
+    { title: 'Statistiques', link: '/dashboard' },
+    {
+      title: 'Modifier les carousels',
+      link: `/dashboard/carousels`
+    }
+  ];
+
   return (
-    <div className=" flex min-h-screen flex-col items-center justify-center">
-      <Player
-        className=""
-        autoplay
-        loop
-        src="/under.json"
-        style={{ height: '20rem', width: '25rem' }}
-      />
-      <span className="-ml-12 text-3xl font-bold text-blue-900">
-        En construcción
-      </span>
-    </div>
+    <PageContainer>
+      <div className="mx-auto w-full max-w-[50rem] border bg-white p-5 shadow-md md:p-10">
+        <Breadcrumbs items={breadcrumbItems} />
+        <h1 className="mb-4 mt-5 text-2xl font-bold">
+          {'Modifier les carousels'}
+        </h1>
+        <Form />
+      </div>
+    </PageContainer>
   );
 }

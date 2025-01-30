@@ -40,7 +40,6 @@ export default function Form() {
         code: formData.get('code') as string,
         active: formData.get('active') === 'on'
       };
-      console.log('🚀 ~ mutationFn: ~ couponData:', couponData);
 
       const parsedData = couponDataSchema.safeParse(couponData);
       if (!parsedData.success) {

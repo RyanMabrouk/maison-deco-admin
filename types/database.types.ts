@@ -13,19 +13,19 @@ export type Database = {
         Row: {
           created_at: string | null
           id: string
-          redirect_url: string | null
+          redirect_url: string
           updated_at: string | null
         }
         Insert: {
           created_at?: string | null
           id?: string
-          redirect_url?: string | null
+          redirect_url: string
           updated_at?: string | null
         }
         Update: {
           created_at?: string | null
           id?: string
-          redirect_url?: string | null
+          redirect_url?: string
           updated_at?: string | null
         }
         Relationships: []
@@ -34,21 +34,21 @@ export type Database = {
         Row: {
           carousel_item_id: string
           created_at: string | null
-          image_url: string | null
+          image_url: string
           lang: Database["public"]["Enums"]["languages_enum"]
           updated_at: string | null
         }
         Insert: {
           carousel_item_id: string
           created_at?: string | null
-          image_url?: string | null
+          image_url: string
           lang: Database["public"]["Enums"]["languages_enum"]
           updated_at?: string | null
         }
         Update: {
           carousel_item_id?: string
           created_at?: string | null
-          image_url?: string | null
+          image_url?: string
           lang?: Database["public"]["Enums"]["languages_enum"]
           updated_at?: string | null
         }
@@ -119,39 +119,6 @@ export type Database = {
             columns: ["category_slug"]
             isOneToOne: false
             referencedRelation: "categories"
-            referencedColumns: ["slug"]
-          },
-        ]
-      }
-      coupon_products: {
-        Row: {
-          coupon_id: string
-          created_at: string
-          product_slug: string
-        }
-        Insert: {
-          coupon_id: string
-          created_at?: string
-          product_slug: string
-        }
-        Update: {
-          coupon_id?: string
-          created_at?: string
-          product_slug?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "coupon_products_coupon_id_fkey"
-            columns: ["coupon_id"]
-            isOneToOne: false
-            referencedRelation: "coupons"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "coupon_products_product_slug_fkey"
-            columns: ["product_slug"]
-            isOneToOne: false
-            referencedRelation: "products"
             referencedColumns: ["slug"]
           },
         ]
