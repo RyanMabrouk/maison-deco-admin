@@ -131,6 +131,7 @@ export type Database = {
           discount: number
           discount_type: Database["public"]["Enums"]["discount_type"]
           id: string
+          max_uses: number
           times_used: number
         }
         Insert: {
@@ -140,6 +141,7 @@ export type Database = {
           discount: number
           discount_type: Database["public"]["Enums"]["discount_type"]
           id?: string
+          max_uses?: number
           times_used?: number
         }
         Update: {
@@ -149,6 +151,7 @@ export type Database = {
           discount?: number
           discount_type?: Database["public"]["Enums"]["discount_type"]
           id?: string
+          max_uses?: number
           times_used?: number
         }
         Relationships: []
@@ -297,6 +300,7 @@ export type Database = {
           bill_url: string
           cancel_reason: string
           country: string | null
+          coupon: Json | null
           created_at: string
           delivered_at: string | null
           delivery_fee: number
@@ -318,6 +322,7 @@ export type Database = {
           bill_url?: string
           cancel_reason?: string
           country?: string | null
+          coupon?: Json | null
           created_at?: string
           delivered_at?: string | null
           delivery_fee: number
@@ -339,6 +344,7 @@ export type Database = {
           bill_url?: string
           cancel_reason?: string
           country?: string | null
+          coupon?: Json | null
           created_at?: string
           delivered_at?: string | null
           delivery_fee?: number

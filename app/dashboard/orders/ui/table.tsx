@@ -176,37 +176,47 @@ export default function Table() {
           setSelectedIds,
           columnState
         })}
-        setSearchQuery={(searchQuery) => {
-          // setFilter({
-          //   ...filter,
-          //   ilike: {
-          //     id: searchQuery
-          //   }
-          // });
+        onSearchChange={(searchQuery) => {
+          if (searchQuery) {
+            setFilter((prev) => ({
+              ...prev,
+              match: {
+                ...prev.match,
+                id: searchQuery
+              }
+            }));
+          } else {
+            setFilter((prev) => ({
+              ...prev,
+              match: {
+                ...prev.match,
+                id: undefined
+              }
+            }));
+          }
         }}
         setPage={(page) => {
-          setFilter({
-            ...filter,
+          setFilter((prev) => ({
+            ...prev,
             pagination: {
-              ...filter.pagination,
+              ...prev.pagination,
               page
             }
-          });
+          }));
         }}
-        searchQuery={filter.ilike?.id ?? ''}
         isLoading={isLoading}
         filter={{
           value: filter.match?.status ?? 'Pending',
           options: statuses,
           placeholder: 'Filtrer par statut',
           seFilter: (status) => {
-            // setFilter((prev) => ({
-            //   ...prev,
-            //   match: {
-            //     ...prev.match,
-            //     status
-            //   }
-            // }));
+            setFilter((prev) => ({
+              ...prev,
+              match: {
+                ...prev.match,
+                status
+              }
+            }));
           }
         }}
       />

@@ -56,7 +56,10 @@ export default function Status({ status }: StatusProps) {
           <ConfirmOrder />
         </div>
       ) : status === 'Pending' ? (
-        <ProcessOrder />
+        <div className="flex items-center gap-2">
+          <CancelReason />
+          <ProcessOrder />
+        </div>
       ) : (
         <Badge
           className={`mt-3 flex items-center px-2 py-1 text-lg text-gray-50 hover:${color} w-fit gap-1 hover:opacity-50 ${color} `}

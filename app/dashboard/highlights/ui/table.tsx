@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { columns } from './columns';
 import { GenericTableData } from '@/components/genericTableData';
 import { usePagination } from '../context/usePagination';
@@ -14,23 +14,23 @@ export default function Table() {
         searchColumnName="slug"
         pagination_data={highlights}
         columns={columns}
-        setSearchQuery={(searchQuery) => {
-          // setFilter({
-          //   ...filter,
-          //   ilike: {
-          //     slug: searchQuery
-          //   }
-          // });
+        onSearchChange={(searchQuery) => {
+          setFilter((prev) => ({
+            ...prev,
+            ilike: {
+              ...prev.ilike,
+              slug: searchQuery
+            }
+          }));
         }}
-        searchQuery={filter.ilike?.slug ?? ''}
         setPage={(page) => {
-          setFilter({
-            ...filter,
+          setFilter((prev) => ({
+            ...prev,
             pagination: {
-              ...filter.pagination,
+              ...prev.pagination,
               page
             }
-          });
+          }));
         }}
         isLoading={isLoading}
       />

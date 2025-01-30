@@ -22,12 +22,12 @@ import Pagination from '@mui/material/Pagination';
 import { Player } from '@lottiefiles/react-lottie-player';
 import SelectGeneric from './selectGeneric';
 import { InfinityPaginationResultType } from '@/helpers/infinityPagination';
+import { useEffect, useState } from 'react';
 
 interface DataTableProps<TData, TValue, TFilter extends string> {
   columns: ColumnDef<TData, TValue>[];
   searchColumnName: string;
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
+  onSearchChange: (query: string) => void;
   pagination_data: InfinityPaginationResultType<TData> | undefined;
   setPage: (page: number) => void;
   tableName?: string;
@@ -44,8 +44,7 @@ export function GenericTableData<TData, TValue, TFilter extends string>({
   columns,
   searchColumnName,
   pagination_data,
-  searchQuery,
-  setSearchQuery,
+  onSearchChange,
   setPage,
   isLoading,
   filter
@@ -56,21 +55,28 @@ export function GenericTableData<TData, TValue, TFilter extends string>({
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel()
   });
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  useEffect(() => {
+    if (!isLoading) {
+      onSearchChange(searchQuery);
+      setPage(1);
+    }
+  }, [searchQuery]);
+
+  useEffect(() => {
     setPage(1);
-    setSearchQuery(event.target.value);
-  }
+  }, [filter?.value]);
 
   return (
     <div className="z-0 overflow-visible">
       <div className="z-0 flex items-center gap-2 overflow-visible">
         <div className="m-2 flex h-11 w-full max-w-md flex-row items-center gap-2 rounded-md border border-gray-300 bg-white shadow-sm">
           <input
-            type="text"
+            type="search"
             placeholder={`Rechercher par ${searchColumnName} ...`}
-            value={searchQuery ?? ''}
-            onChange={handleChange}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)} // Updated to set inputValue
             className="w-full rounded-lg p-2 placeholder:text-[0.9rem] focus:outline-none"
           />
           <button className="flex h-full cursor-default items-center justify-center rounded-lg p-2 transition-colors">
@@ -107,7 +113,7 @@ export function GenericTableData<TData, TValue, TFilter extends string>({
               src={
                 'https://lottie.host/85fb7313-2848-45c2-bdb9-2b729f57afc2/AwfmWMtW8n.json'
               }
-              className="m-auto h-60 w-60"
+              className="mx-auto mt-[50%] h-60 w-60"
               loop
               autoplay
             />
@@ -185,23 +191,25 @@ export function GenericTableData<TData, TValue, TFilter extends string>({
 
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-      <div className="relative flex w-full items-center justify-center space-x-2 space-x-reverse py-4">
-        <div className="absolute inset-y-0 right-0 top-1/3 flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} sur{' '}
-          {table.getFilteredRowModel().rows.length} ligne(s) sélectionnée(s)
-        </div>
+      {!isLoading && (
+        <div className="relative flex w-full items-center justify-center space-x-2 space-x-reverse py-4">
+          <div className="absolute inset-y-0 right-0 top-1/3 flex-1 text-sm text-muted-foreground">
+            {table.getFilteredSelectedRowModel().rows.length} sur{' '}
+            {table.getFilteredRowModel().rows.length} ligne(s) sélectionnée(s)
+          </div>
 
-        <div className="space-x-2">
-          <Pagination
-            dir="ltr"
-            className="flex w-full justify-center"
-            count={pagination_data?.meta.total_pages ?? 1}
-            page={pagination_data?.meta.page ?? 1}
-            boundaryCount={1}
-            onChange={(e, value) => setPage(value)}
-          />
+          <div className="space-x-2">
+            <Pagination
+              dir="ltr"
+              className="flex w-full justify-center"
+              count={pagination_data?.meta.total_pages ?? 1}
+              page={pagination_data?.meta.page ?? 1}
+              boundaryCount={1}
+              onChange={(e, value) => setPage(value)}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface PaginationContextProps {
   filter: CouponsQueryArgs;
-  setFilter: (filter: CouponsQueryArgs) => void;
+  setFilter: React.Dispatch<React.SetStateAction<CouponsQueryArgs>>;
 }
 const PaginationContext = createContext<PaginationContextProps | undefined>(
   undefined

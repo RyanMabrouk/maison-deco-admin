@@ -4,7 +4,7 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface PaginationContextProps {
   filter: ProductsQueryArgs;
-  setFilter: (filter: ProductsQueryArgs) => void;
+  setFilter: React.Dispatch<React.SetStateAction<ProductsQueryArgs>>;
 }
 const PaginationContext = createContext<PaginationContextProps | undefined>(
   undefined
@@ -14,6 +14,9 @@ export const PaginationProvider = ({ children }: { children: ReactNode }) => {
     pagination: {
       page: 1,
       limit: 8
+    },
+    ilike: {
+      slug: ''
     }
   });
   return (

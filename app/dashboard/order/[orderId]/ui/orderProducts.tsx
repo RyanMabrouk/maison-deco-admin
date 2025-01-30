@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Status from './status';
 import { QueryReturnType } from '@/types';
 import { orderByIdQuery } from '@/hooks/data/orders/getOrdersById/ByIdQuery';
+import { Tables } from '@/types/database.types';
 
 export interface CartItem {
   quantity: number;
@@ -31,6 +32,8 @@ export default function OrderProducts({
   if (!order) return null;
   const products = (order.items ?? []) as unknown as CartItem[];
   const isScrollable = products.length >= 3;
+
+  const coupon = order.coupon as unknown as Tables<'coupons'> | null;
 
   return (
     <div className="max-w-full rounded-md bg-white p-4 shadow-md">
@@ -142,16 +145,26 @@ export default function OrderProducts({
         <span>Total :</span>
         <span>{order.total_price}€</span>
       </div>
-      <div className="mt-4 flex justify-between pt-4 text-lg font-semibold">
+      <div className=" flex justify-between pt-4 text-lg font-semibold">
         <span>Taxe :</span>
         <span>{order.tax}€</span>
       </div>
       <div>
-        <span className="mt-4 flex justify-between pt-4 text-lg font-semibold">
+        <span className=" flex justify-between pt-4 text-lg font-semibold">
           <span>Frais de livraison :</span>
           <span>{order.delivery_fee}€</span>
         </span>
       </div>
+
+      {coupon && (
+        <div className="flex justify-between pt-4 text-lg font-semibold">
+          <span>Coupon :</span>
+          <span>
+            {coupon.code} -{coupon.discount}{' '}
+            {coupon.discount_type === 'amount' ? '€' : '%'}
+          </span>
+        </div>
+      )}
     </div>
   );
 }

@@ -30,7 +30,10 @@ export default function Form() {
         discount_type: z.enum(['percentage', 'amount']).optional(),
         discount: z.number().min(0, 'La réduction ne peut pas être négative'),
         code: z.string().min(1, 'Le code est requis'),
-        active: z.boolean().optional()
+        active: z.boolean().optional(),
+        max_uses: z
+          .number()
+          .min(0, "Le nombre d'utilisations ne peut pas être négatif")
       });
       const couponData: TablesInsert<'coupons'> = {
         discount_type: String(
@@ -38,7 +41,8 @@ export default function Form() {
         ) as Enums<'discount_type'>,
         discount: Number(formData.get('discount')),
         code: formData.get('code') as string,
-        active: formData.get('active') === 'on'
+        active: formData.get('active') === 'on',
+        max_uses: Number(formData.get('max_uses'))
       };
 
       const parsedData = couponDataSchema.safeParse(couponData);
@@ -136,10 +140,17 @@ export default function Form() {
             defaultValue={coupon?.data?.code}
             placeholder="Entrez le code"
           />
+          <Input
+            label="Nombre d'utilisations"
+            name="max_uses"
+            type="number"
+            defaultValue={coupon?.data?.max_uses || 0}
+            placeholder="Entrez le nombre d'utilisations"
+          />
           <div className="ml-4 mr-8">
-            <label className="mb-2 block font-semibold">{'Active'}</label>
+            <label className="mb-2 block font-semibold">{'Actif'}</label>
             <Switch
-              className="ml-1 mt-3"
+              className=" mt-3"
               name="active"
               defaultChecked={coupon?.data?.active || false}
             />

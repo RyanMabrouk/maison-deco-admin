@@ -6,9 +6,7 @@ import { usePagination } from '../context/usePagination';
 import { GenericTableData } from '@/components/genericTableData';
 import { Separator } from '@/components/ui/separator';
 import { SwitchGeneric } from '@/components/switchGeneric';
-import useProducts from '@/hooks/data/products/getProducts/useProducts';
 import { productsQuery } from '@/hooks/data/products/getProducts/productsQuery';
-import Image from 'next/image';
 import useCoupons from '@/hooks/data/coupons/get/useGet';
 import { Tables } from '@/types/database.types';
 
@@ -117,24 +115,24 @@ export default function Table() {
           setSelectedIds,
           columnState
         })}
-        setSearchQuery={(searchQuery) => {
-          // setFilter({
-          //   ...filter,
-          //   ilike: {
-          //     slug: searchQuery
-          //   }
-          // });
+        onSearchChange={(searchQuery) => {
+          setFilter((prev) => ({
+            ...prev,
+            ilike: {
+              ...prev.ilike,
+              code: searchQuery
+            }
+          }));
         }}
         setPage={(page) => {
-          setFilter({
-            ...filter,
+          setFilter((prev) => ({
+            ...prev,
             pagination: {
-              ...filter.pagination,
+              ...prev.pagination,
               page
             }
-          });
+          }));
         }}
-        searchQuery={filter.ilike?.code ?? ''}
         isLoading={isLoading}
       />
     </div>

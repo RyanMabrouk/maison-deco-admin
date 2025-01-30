@@ -39,16 +39,6 @@ export default function Table() {
       )
     },
     {
-      accessorKey: 'is_published',
-      header: 'Is Published',
-      visible: true
-    },
-    {
-      accessorKey: 'status',
-      header: 'Status',
-      visible: true
-    },
-    {
       accessorKey: 'slug',
       header: 'Slug',
       visible: true,
@@ -59,6 +49,17 @@ export default function Table() {
       )
     },
     {
+      accessorKey: 'is_published',
+      header: 'Is Published',
+      visible: true
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status',
+      visible: true
+    },
+
+    {
       accessorKey: 'price_after_discount',
       header: 'Price',
       visible: true
@@ -66,12 +67,14 @@ export default function Table() {
     {
       accessorKey: 'discount',
       header: 'Discount',
-      visible: true
-    },
-    {
-      accessorKey: 'discount_type',
-      header: 'Discount Type',
-      visible: true
+      visible: true,
+      cell: ({ row }) => (
+        <span>
+          {row.original.discount_type === 'amount'
+            ? `${row.original.discount}€`
+            : `${row.original.discount}%`}
+        </span>
+      )
     },
     {
       accessorKey: 'stock',
@@ -141,24 +144,24 @@ export default function Table() {
           setSelectedIds,
           columnState
         })}
-        setSearchQuery={(searchQuery) => {
-          // setFilter({
-          //   ...filter,
-          //   ilike: {
-          //     slug: searchQuery
-          //   }
-          // });
+        onSearchChange={(searchQuery) => {
+          setFilter((prev) => ({
+            ...prev,
+            ilike: {
+              ...prev.ilike,
+              slug: searchQuery
+            }
+          }));
         }}
         setPage={(page) => {
-          setFilter({
-            ...filter,
+          setFilter((prev) => ({
+            ...prev,
             pagination: {
-              ...filter.pagination,
+              ...prev.pagination,
               page
             }
-          });
+          }));
         }}
-        searchQuery={filter.ilike?.slug ?? ''}
         isLoading={isLoading}
       />
     </div>
