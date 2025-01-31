@@ -43,14 +43,13 @@ export default function Table() {
             }
           });
         }}
-        searchQuery={filter.ilike?.['email'] ?? ''}
-        setSearchQuery={(searchQuery) => {
-          // setFilter({
-          //   ...filter,
-          //   ilike: {
-          //     email: searchQuery
-          //   }
-          // });
+        onSearchChange={(searchQuery) => {
+          setFilter({
+            ...filter,
+            ilike: {
+              email: searchQuery
+            }
+          });
         }}
         isLoading={isLoading}
       />
