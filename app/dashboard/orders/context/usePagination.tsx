@@ -20,6 +20,10 @@ export const PaginationProvider = ({ children }: { children: ReactNode }) => {
     pagination: {
       page: 1,
       limit: 8
+    },
+    order: {
+      column: 'created_at',
+      direction: 'desc'
     }
   });
   return (

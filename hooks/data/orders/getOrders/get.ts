@@ -12,7 +12,7 @@ export async function getOrders(args: OrdersQueryArgs) {
 
   let query = supabase
     .from('orders')
-    .select('*', {
+    .select('*,users(*)', {
       count: 'exact',
       head: false
     })
@@ -24,6 +24,12 @@ export async function getOrders(args: OrdersQueryArgs) {
       if (args.ilike?.[key]) {
         query = query.ilike(key, `%${args.ilike[key]}%`);
       }
+    });
+  }
+
+  if (args.order) {
+    query = query.order(args.order.column, {
+      ascending: args.order.direction === 'asc'
     });
   }
 

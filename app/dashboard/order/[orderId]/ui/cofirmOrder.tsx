@@ -22,7 +22,8 @@ export default function ConfirmOrder() {
       const { error } = await updateOrder({
         id: String(orderId),
         payload: {
-          status: 'Delivered'
+          status: 'Delivered',
+          delivered_at: new Date().toISOString()
         }
       });
       if (error) {
