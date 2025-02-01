@@ -16,7 +16,7 @@ export const navItems: NavItem[] = [
   {
     title: 'Produits',
     href: '/dashboard/products',
-    icon: 'user',
+    icon: 'ShoppingBasket',
     label: 'products'
   },
   {

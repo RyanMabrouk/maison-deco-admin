@@ -149,12 +149,12 @@ export default function Page() {
           </div> */}
         </div>
         <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList className="bg-bgcolor1">
+          {/* <TabsList className="bg-bgcolor1">
             <TabsTrigger value="overview">Aperçu</TabsTrigger>
             <TabsTrigger value="analytics" disabled>
               Analytique
             </TabsTrigger>
-          </TabsList>
+          </TabsList> */}
           <TabsContent value="overview" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               {statCards.map((stat, index) => (

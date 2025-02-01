@@ -48,14 +48,12 @@ async function fetchStatsForPeriod(
   const groupedData: { [key: string]: { sum: number; count: number } } = {};
 
   allProductsPurchased.forEach((item) => {
-    const categorySlug = categoryMap[item.slug];
-    if (categorySlug) {
-      if (!groupedData[categorySlug]) {
-        groupedData[categorySlug] = { sum: 0, count: 0 };
-      }
-      groupedData[categorySlug].sum += item.price_after_discount;
-      groupedData[categorySlug].count += 1;
+    const categorySlug = categoryMap[item.slug] || 'non catégorisé';
+    if (!groupedData[categorySlug]) {
+      groupedData[categorySlug] = { sum: 0, count: 0 };
     }
+    groupedData[categorySlug].sum += item.price_after_discount;
+    groupedData[categorySlug].count += 1;
   });
 
   const stats: CategoryStats[] = Object.keys(groupedData)
@@ -65,7 +63,6 @@ async function fetchStatsForPeriod(
       sum: parseFloat(groupedData[category_slug].sum.toFixed(2)),
       count: groupedData[category_slug].count
     }));
-
 
   return stats;
 }
