@@ -41,7 +41,7 @@ export default function Page() {
   const calculateGrowth = (current: number, previous: number): string => {
     if (previous === 0) return '100%';
     const growth = ((current - previous) / previous) * 100;
-    return `${growth.toFixed(1)}%`;
+    return growth > 0 ? `+${growth.toFixed(1)}%` : `${growth.toFixed(2)}%`;
   };
 
   const statCards = [
