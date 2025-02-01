@@ -1,6 +1,4 @@
 'use client';
-
-import { TrendingUp } from 'lucide-react';
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
 import {
@@ -17,7 +15,6 @@ import {
   ChartTooltip,
   ChartTooltipContent
 } from '@/components/ui/chart';
-import { Enums } from '@/types/database.types';
 import useOrdersStatsByStatus from '@/hooks/data/stats/useBySatus';
 
 // const chartData = [
