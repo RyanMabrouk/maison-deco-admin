@@ -14,9 +14,10 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import useOrdersStatsPerMonth from '@/hooks/data/stats/useStatsPerMonth';
 import * as React from 'react';
+import Loading from './loading';
 
 export default function Page() {
-  const { data } = useOrdersStatsPerMonth();
+  const { data, isLoading } = useOrdersStatsPerMonth();
   const {
     sumThisMonth,
     sumLastMonth,
@@ -130,6 +131,10 @@ export default function Page() {
       )
     }
   ];
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <PageContainer scrollable={true}>
