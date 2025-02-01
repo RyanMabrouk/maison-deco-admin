@@ -15,6 +15,7 @@ import {
   ChartTooltipContent
 } from '@/components/ui/chart';
 import useOrdersStats from '@/hooks/data/stats/useStats';
+import Loading from '@/app/dashboard/loading';
 
 export const description = 'Un graphique à barres interactif';
 
@@ -146,7 +147,7 @@ export function BarGraph() {
     []
   );
 
-  if (isLoading) return null;
+  if (isLoading) return <Loading />;
 
   const chartTitleConfig = {
     avg_earnings: {

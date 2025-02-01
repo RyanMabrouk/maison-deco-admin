@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/card';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import useStatsParCategory from '@/hooks/data/stats/usePerCategory';
+import Loading from '@/app/dashboard/loading';
 
 // Palette of colors for the pie chart
 const COLORS = [
@@ -82,16 +83,7 @@ export function PieGraph() {
   };
 
   if (isLoading) {
-    return (
-      <Card className="flex flex-col">
-        <CardHeader>
-          <CardTitle>Chargement du graphique...</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>Veuillez patienter pendant le chargement des données.</p>
-        </CardContent>
-      </Card>
-    );
+    return <Loading />;
   }
 
   if (!chartData) {

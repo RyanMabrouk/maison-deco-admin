@@ -16,6 +16,7 @@ import {
   ChartTooltipContent
 } from '@/components/ui/chart';
 import useOrdersStatsByStatus from '@/hooks/data/stats/useBySatus';
+import Loading from '@/app/dashboard/loading';
 
 // const chartData = [
 //   {
@@ -78,7 +79,7 @@ const chartConfig = {
 export function AreaGraph() {
   const { data: chartData, isLoading } = useOrdersStatsByStatus();
 
-  if (isLoading) return null;
+  if (isLoading) return <Loading />;
   return (
     <Card>
       <CardHeader>
