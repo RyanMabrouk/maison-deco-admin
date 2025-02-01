@@ -17,33 +17,75 @@ import {
   ChartTooltip,
   ChartTooltipContent
 } from '@/components/ui/chart';
-const chartData = [
-  { month: 'January', desktop: 186, mobile: 80 },
-  { month: 'February', desktop: 305, mobile: 200 },
-  { month: 'March', desktop: 237, mobile: 120 },
-  { month: 'April', desktop: 73, mobile: 190 },
-  { month: 'May', desktop: 209, mobile: 130 },
-  { month: 'June', desktop: 214, mobile: 140 }
-];
+import { Enums } from '@/types/database.types';
+import useOrdersStatsByStatus from '@/hooks/data/stats/useBySatus';
+
+// const chartData = [
+//   {
+//     month: 'Janvier',
+//     pending: 186,
+//     processing: 80,
+//     delivered: 150,
+//     cancelled: 10
+//   },
+//   {
+//     month: 'Février',
+//     pending: 305,
+//     processing: 200,
+//     delivered: 250,
+//     cancelled: 20
+//   },
+//   {
+//     month: 'Mars',
+//     pending: 237,
+//     processing: 120,
+//     delivered: 180,
+//     cancelled: 15
+//   },
+//   {
+//     month: 'Avril',
+//     pending: 73,
+//     processing: 190,
+//     delivered: 220,
+//     cancelled: 5
+//   },
+//   { month: 'Mai', pending: 209, processing: 130, delivered: 210, cancelled: 8 },
+//   {
+//     month: 'Juin',
+//     pending: 214,
+//     processing: 140,
+//     delivered: 230,
+//     cancelled: 12
+//   }
+// ];
 
 const chartConfig = {
-  desktop: {
-    label: 'Desktop',
-    color: 'hsl(var(--chart-1))'
+  pending: {
+    label: 'En attente',
+    color: 'hsl(var(--chart-4))'
   },
-  mobile: {
-    label: 'Mobile',
+  processing: {
+    label: 'En traitement',
+    color: 'hsl(var(--chart-3))'
+  },
+  delivered: {
+    label: 'Livré',
     color: 'hsl(var(--chart-2))'
+  },
+  cancelled: {
+    label: 'Annulé',
+    color: 'hsl(var(--chart-1))'
   }
 } satisfies ChartConfig;
 
 export function AreaGraph() {
+  const { data: chartData } = useOrdersStatsByStatus();
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Average Order Value (AOV)</CardTitle>
+        <CardTitle>Statut des Commandes au Fil du Temps</CardTitle>
         <CardDescription>
-          Showing total visitors for the last 6 months
+          Affichage du nombre de commandes par statut pour les derniers mois
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -53,7 +95,7 @@ export function AreaGraph() {
         >
           <AreaChart
             accessibilityLayer
-            data={chartData}
+            data={chartData?.data ?? []}
             margin={{
               left: 12,
               right: 12
@@ -72,19 +114,35 @@ export function AreaGraph() {
               content={<ChartTooltipContent indicator="dot" />}
             />
             <Area
-              dataKey="mobile"
+              dataKey="pending"
               type="natural"
-              fill="var(--color-mobile)"
+              fill={chartConfig.pending.color}
               fillOpacity={0.4}
-              stroke="var(--color-mobile)"
+              stroke={chartConfig.pending.color}
               stackId="a"
             />
             <Area
-              dataKey="desktop"
+              dataKey="processing"
               type="natural"
-              fill="var(--color-desktop)"
+              fill={chartConfig.processing.color}
               fillOpacity={0.4}
-              stroke="var(--color-desktop)"
+              stroke={chartConfig.processing.color}
+              stackId="a"
+            />
+            <Area
+              dataKey="delivered"
+              type="natural"
+              fill={chartConfig.delivered.color}
+              fillOpacity={0.4}
+              stroke={chartConfig.delivered.color}
+              stackId="a"
+            />
+            <Area
+              dataKey="cancelled"
+              type="natural"
+              fill={chartConfig.cancelled.color}
+              fillOpacity={0.4}
+              stroke={chartConfig.cancelled.color}
               stackId="a"
             />
           </AreaChart>
@@ -93,11 +151,12 @@ export function AreaGraph() {
       <CardFooter>
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
+            {/* <div className="flex items-center gap-2 font-medium leading-none">
+              En hausse de 5,2% ce mois-ci <TrendingUp className="h-4 w-4" />
+            </div> */}
             <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              January - June 2024
+              {chartData?.data?.[0].month} -{' '}
+              {chartData?.data?.[chartData.data.length - 1].month}
             </div>
           </div>
         </div>
