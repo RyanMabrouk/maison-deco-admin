@@ -96,101 +96,98 @@ export function GenericTableData<TData, TValue, TFilter extends string>({
           )}
         </span>
       </div>
-      <ScrollArea className="z-0 h-[calc(80vh-220px)] !overflow-visible rounded-md border md:h-[calc(80vh-200px)]">
-        {isLoading ? (
-          <div className="m-auto mt-[10%] flex h-full w-full max-w-[40rem] items-center justify-center rounded-md">
-            <Player
-              className="m-auto"
-              autoplay
-              loop
-              src="/loading.json"
-              style={{ height: '10rem', width: '10rem' }}
-            />
-          </div>
-        ) : table.getRowModel().rows.length === 0 ? (
-          <div className="m-auto mt-[5%] flex h-full w-full max-w-[40rem] items-center justify-center rounded-md">
-            <Player
-              src={
-                'https://lottie.host/85fb7313-2848-45c2-bdb9-2b729f57afc2/AwfmWMtW8n.json'
-              }
-              className="mx-auto mt-[50%] h-60 w-60"
-              loop
-              autoplay
-            />
-          </div>
-        ) : (
-          <Table className="relative z-0 !overflow-visible">
-            <TableHeader className="bg-color3 font-semibold">
-              {table.getHeaderGroups().map((headerGroup) => (
+      {isLoading ? (
+        <div className="m-auto mt-[10%] flex h-full w-full max-w-[40rem] items-center justify-center rounded-md">
+          <Player
+            className="m-auto"
+            autoplay
+            loop
+            src="/loading.json"
+            style={{ height: '10rem', width: '10rem' }}
+          />
+        </div>
+      ) : table.getRowModel().rows.length === 0 ? (
+        <div className="m-auto mt-[5%] flex h-full w-full max-w-[40rem] items-center justify-center rounded-md">
+          <Player
+            src={
+              'https://lottie.host/85fb7313-2848-45c2-bdb9-2b729f57afc2/AwfmWMtW8n.json'
+            }
+            className="mx-auto mt-[50%] h-60 w-60"
+            loop
+            autoplay
+          />
+        </div>
+      ) : (
+        <Table className="relative z-0 !overflow-visible">
+          <TableHeader className="bg-color3 font-semibold">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow
+                key={headerGroup.id}
+                className="w-fit text-color1 hover:bg-color3"
+              >
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="w-fit whitespace-nowrap px-4 py-3 text-center font-bold text-color1 hover:bg-color3"
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+
+          <TableBody className="z-0 max-h-[30rem] !overflow-visible">
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row, index) => (
                 <TableRow
-                  key={headerGroup.id}
-                  className="w-fit text-color1 hover:bg-color3"
+                  key={row.id}
+                  className="z-0 !overflow-visible"
+                  data-state={row.getIsSelected() && 'selected'}
                 >
-                  {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      className="w-fit whitespace-nowrap px-4 py-3 text-center font-bold text-color1 hover:bg-color3"
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className="z-0 w-min max-w-[15rem] px-4"
                     >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
+                      <div
+                        className={`tooltip flex h-fit max-w-[15rem] items-center justify-center text-left before:z-[1000] after:z-[1000] ${
+                          table.getRowModel().rows.length / 2 <= index
+                            ? 'tooltip-top'
+                            : 'tooltip-bottom'
+                        }`}
+                        data-tip={cell.getValue()}
+                      >
+                        <span className="max-w-[15rem]">
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
                           )}
-                    </TableHead>
+                        </span>
+                      </div>
+                    </TableCell>
                   ))}
                 </TableRow>
-              ))}
-            </TableHeader>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  Aucun résultat.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      )}
 
-            <TableBody className="z-0 !overflow-visible">
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row, index) => (
-                  <TableRow
-                    key={row.id}
-                    className="z-0 !overflow-visible"
-                    data-state={row.getIsSelected() && 'selected'}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell
-                        key={cell.id}
-                        className="z-0 w-min max-w-[15rem] px-4"
-                      >
-                        <div
-                          className={`tooltip flex h-fit max-w-[15rem] items-center justify-center text-left before:z-[1000] after:z-[1000] ${
-                            table.getRowModel().rows.length / 2 <= index
-                              ? 'tooltip-top'
-                              : 'tooltip-bottom'
-                          }`}
-                          data-tip={cell.getValue()}
-                        >
-                          <span className="max-w-[15rem]">
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </span>
-                        </div>
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    Aucun résultat.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        )}
-
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
       {!isLoading && (
         <div className="relative flex w-full items-center justify-center space-x-2 space-x-reverse py-4">
           <div className="absolute inset-y-0 right-0 top-1/3 flex-1 text-sm text-muted-foreground">

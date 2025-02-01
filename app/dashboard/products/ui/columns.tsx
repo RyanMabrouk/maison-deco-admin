@@ -17,39 +17,39 @@ export const columns = ({
     visible: boolean;
   }[];
 }): ColumnDef<QueryReturnType<typeof productsQuery>['data'][number]>[] => [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => {
-          const allIds = table
-            .getRowModel()
-            .rows.map((row) => row.original.slug);
-          setSelectedIds(value ? allIds : []);
-          table.toggleAllPageRowsSelected(!!value);
-        }}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={selectedIds.includes(row.original.slug)}
-        onCheckedChange={(value) => {
-          const slug = row.original.slug;
-          setSelectedIds(
-            value
-              ? [...selectedIds, slug]
-              : selectedIds.filter((selectedId) => selectedId !== slug)
-          );
-          row.toggleSelected(!!value);
-        }}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false
-  },
+  // {
+  //   id: 'select',
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={table.getIsAllPageRowsSelected()}
+  //       onCheckedChange={(value) => {
+  //         const allIds = table
+  //           .getRowModel()
+  //           .rows.map((row) => row.original.slug);
+  //         setSelectedIds(value ? allIds : []);
+  //         table.toggleAllPageRowsSelected(!!value);
+  //       }}
+  //       aria-label="Select all"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={selectedIds.includes(row.original.slug)}
+  //       onCheckedChange={(value) => {
+  //         const slug = row.original.slug;
+  //         setSelectedIds(
+  //           value
+  //             ? [...selectedIds, slug]
+  //             : selectedIds.filter((selectedId) => selectedId !== slug)
+  //         );
+  //         row.toggleSelected(!!value);
+  //       }}
+  //       aria-label="Select row"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false
+  // },
   ...columnState.filter((col) => col.visible),
   {
     id: 'actions',
