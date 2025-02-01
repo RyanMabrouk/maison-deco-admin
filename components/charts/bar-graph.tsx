@@ -114,9 +114,6 @@ export const description = 'Un graphique à barres interactif';
 // ];
 
 const chartConfig = {
-  views: {
-    label: 'Vues'
-  },
   avg_earnings: {
     label: 'Ventes',
     color: 'hsl(var(--chart-1))'
@@ -157,10 +154,6 @@ export function BarGraph() {
     user_count: {
       title: 'Total Clients',
       description: 'Nombre total de clients par jour'
-    },
-    views: {
-      title: 'Vues',
-      description: 'Nombre de vues par jour'
     }
   } as const;
 
