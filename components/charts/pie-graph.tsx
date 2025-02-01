@@ -82,21 +82,8 @@ export function PieGraph() {
     return `${startStr} - ${endStr}`;
   };
 
-  if (isLoading) {
+  if (isLoading || !chartData) {
     return <Loading />;
-  }
-
-  if (!chartData) {
-    return (
-      <Card className="flex flex-col">
-        <CardHeader>
-          <CardTitle>Erreur du graphique</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>Impossible de charger les données du graphique.</p>
-        </CardContent>
-      </Card>
-    );
   }
 
   return (

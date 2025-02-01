@@ -79,7 +79,7 @@ const chartConfig = {
 export function AreaGraph() {
   const { data: chartData, isLoading } = useOrdersStatsByStatus();
 
-  if (isLoading) return <Loading />;
+  if (isLoading || !chartData?.data) return <Loading />;
   return (
     <Card>
       <CardHeader>

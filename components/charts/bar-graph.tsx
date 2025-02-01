@@ -144,8 +144,6 @@ export function BarGraph() {
     []
   );
 
-  if (isLoading) return <Loading />;
-
   const chartTitleConfig = {
     avg_earnings: {
       title: 'Affichage des Ventes',
@@ -156,6 +154,7 @@ export function BarGraph() {
       description: 'Nombre total de clients par jour'
     }
   } as const;
+  if (isLoading || !chartData?.data) return <Loading />;
 
   return (
     <Card className="h-full">

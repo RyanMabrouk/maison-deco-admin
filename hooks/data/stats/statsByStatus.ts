@@ -15,7 +15,8 @@ export async function getOrdersStatsByStatus() {
   // Fetch orders with their status
   const { data: orders, error } = await supabase
     .from('orders')
-    .select('created_at, status');
+    .select('created_at, status')
+    .order('created_at', { ascending: true });
 
   if (error) {
     return {
@@ -58,7 +59,7 @@ export async function getOrdersStatsByStatus() {
     }));
 
   return {
-    data: stats.reverse(),
+    data: stats,
     error: null
   };
 }
