@@ -113,7 +113,10 @@ export default function Table() {
     {
       accessorKey: 'payment_method',
       header: 'Méthode de Paiement',
-      visible: true
+      visible: true,
+      cell: ({ row }) => (
+        <div>{row.original.payment_method ?? 'Non Spécifié'}</div>
+      )
     }
   ]);
 
