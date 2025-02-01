@@ -52,7 +52,7 @@ export function PieGraph() {
   // Dynamic chart configuration based on categories
   const dynamicChartConfig = React.useMemo(() => {
     return pieData.map((entry, index) => ({
-      name: entry.name,
+      name: `${entry.name}-`,
       value: entry.value,
       fill: COLORS[index % COLORS.length]
     }));
