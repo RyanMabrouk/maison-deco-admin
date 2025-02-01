@@ -130,7 +130,7 @@ export function BarGraph() {
   const [activeChart, setActiveChart] =
     React.useState<keyof typeof chartConfig>('avg_earnings');
 
-  const { data: chartData } = useOrdersStats();
+  const { data: chartData, isLoading } = useOrdersStats();
 
   const total = React.useMemo(
     () => ({
@@ -145,6 +145,8 @@ export function BarGraph() {
     }),
     []
   );
+
+  if (isLoading) return null;
 
   const chartTitleConfig = {
     avg_earnings: {

@@ -30,7 +30,7 @@ interface CategoryStats {
 }
 
 export function PieGraph() {
-  const { data, isLoading, error } = useStatsParCategory();
+  const { data, isLoading } = useStatsParCategory();
   const chartData = data?.currentQuarter;
   const previousChartData = data?.previousQuarter;
   // Calculate total earnings
@@ -94,7 +94,7 @@ export function PieGraph() {
     );
   }
 
-  if (error || !chartData) {
+  if (!chartData) {
     return (
       <Card className="flex flex-col">
         <CardHeader>

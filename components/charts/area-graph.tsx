@@ -76,7 +76,9 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function AreaGraph() {
-  const { data: chartData } = useOrdersStatsByStatus();
+  const { data: chartData, isLoading } = useOrdersStatsByStatus();
+
+  if (isLoading) return null;
   return (
     <Card>
       <CardHeader>
