@@ -6,11 +6,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { Edit, MoreHorizontal } from 'lucide-react';
+import { Clock, Edit, MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
 import DeleteOrder from './DeleteOrder';
 import { QueryReturnType } from '@/types';
 import { ordersQuery } from '@/hooks/data/orders/getOrders/getQuery';
+import CancelReason from '../../order/[orderId]/ui/cancelReason';
+import ProcessOrder from '../../order/[orderId]/ui/proccessOrder';
+import ConfirmOrder from '../../order/[orderId]/ui/cofirmOrder';
 
 interface CellActionProps {
   data: QueryReturnType<typeof ordersQuery>['data'][number];
@@ -30,6 +33,21 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           align="start"
           className="min-w-[7rem] max-w-[7rem]"
         >
+          {data.status !== 'Cancelled' && data.status !== 'Delivered' && (
+            <DropdownMenuItem asChild>
+              <CancelReason dropMenu id={data.id} />
+            </DropdownMenuItem>
+          )}
+          {data.status === 'Pending' && (
+            <DropdownMenuItem asChild>
+              <ProcessOrder dropMenu id={data.id} />
+            </DropdownMenuItem>
+          )}
+          {data.status === 'Processing' && (
+            <DropdownMenuItem asChild>
+              <ConfirmOrder dropMenu id={data.id} />
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem asChild>
             <Link
               href={`/dashboard/order/${data?.id}`}

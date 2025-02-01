@@ -11,16 +11,24 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { updateOrder } from '@/hooks/data/orders/updateOrder/updateOrder';
+import { CheckCircle } from 'lucide-react';
 
-export default function ConfirmOrder() {
+export default function ConfirmOrder({
+  dropMenu,
+  id
+}: {
+  dropMenu?: boolean;
+  id?: string;
+}) {
   const { orderId } = useParams();
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   const addOrderMutation = useMutation({
     mutationFn: async () => {
+      const item_id = dropMenu ? id : String(orderId);
       const { error } = await updateOrder({
-        id: String(orderId),
+        id: item_id as string,
         payload: {
           status: 'Delivered',
           delivered_at: new Date().toISOString()
@@ -49,9 +57,16 @@ export default function ConfirmOrder() {
   return (
     <Dialog>
       <DialogTrigger>
-        <button className="mt-5 w-fit rounded-md border bg-color2 px-4 py-2 text-lg text-white shadow-md hover:opacity-50">
-          Commande Livrée ?
-        </button>
+        {dropMenu ? (
+          <div className="flex cursor-pointer items-center justify-start gap-2 p-2">
+            <CheckCircle className="h-4 w-4" />
+            <span className="text-sm">livrée</span>
+          </div>
+        ) : (
+          <button className="mt-5 w-fit rounded-md border bg-color2 px-4 py-2 text-lg text-white shadow-md hover:opacity-50">
+            Commande Livrée ?
+          </button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>

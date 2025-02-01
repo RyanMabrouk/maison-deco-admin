@@ -13,8 +13,15 @@ import { useParams } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { Textarea } from '@/components/ui/textarea';
 import { updateOrder } from '@/hooks/data/orders/updateOrder/updateOrder';
+import { XCircle } from 'lucide-react';
 
-export default function CancelReason() {
+export default function CancelReason({
+  dropMenu,
+  id
+}: {
+  dropMenu?: boolean;
+  id?: string;
+}) {
   const [cancel_reason, setCancel_reason] = useState<string>('');
   const { orderId } = useParams();
   const queryClient = useQueryClient();
@@ -22,8 +29,9 @@ export default function CancelReason() {
 
   const cancelOrderMutation = useMutation({
     mutationFn: async () => {
+      const item_id = dropMenu ? id : String(orderId);
       const { error } = await updateOrder({
-        id: String(orderId),
+        id: item_id as string,
         payload: {
           status: 'Cancelled',
           cancel_reason
@@ -51,9 +59,16 @@ export default function CancelReason() {
   return (
     <Dialog>
       <DialogTrigger>
-        <button className="mt-5 w-fit rounded-md border bg-red-500 px-4 py-2 text-lg text-white shadow-md hover:opacity-50">
-          Annuler la commande
-        </button>
+        {dropMenu ? (
+          <div className="flex cursor-pointer items-center justify-start gap-2 p-2">
+            <XCircle className="h-4 w-4" />
+            <span className="text-sm">Annuler</span>
+          </div>
+        ) : (
+          <button className="mt-5 w-fit rounded-md border bg-red-500 px-4 py-2 text-lg text-white shadow-md hover:opacity-50">
+            Annuler la commande
+          </button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>
