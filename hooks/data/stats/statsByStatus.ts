@@ -28,7 +28,7 @@ export async function getOrdersStatsByStatus() {
   const groupedOrders: { [key: string]: { [status: string]: number } } = {};
 
   orders.forEach((order) => {
-    const month = new Date(order.created_at).toLocaleString('default', {
+    const month = new Date(order.created_at).toLocaleString('fr-FR', {
       month: 'long',
       year: 'numeric'
     });

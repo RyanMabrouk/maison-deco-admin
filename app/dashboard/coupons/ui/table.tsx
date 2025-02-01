@@ -51,6 +51,11 @@ export default function Table() {
       visible: true
     },
     {
+      accessorKey: 'max_uses',
+      header: 'Utilisations max',
+      visible: true
+    },
+    {
       accessorKey: 'created_at',
       header: 'Créé le',
       visible: true,

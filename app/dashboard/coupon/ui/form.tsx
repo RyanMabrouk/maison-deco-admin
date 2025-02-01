@@ -141,7 +141,7 @@ export default function Form() {
             placeholder="Entrez le code"
           />
           <Input
-            label="Nombre d'utilisations"
+            label="Max utilisations"
             name="max_uses"
             type="number"
             defaultValue={coupon?.data?.max_uses || 0}

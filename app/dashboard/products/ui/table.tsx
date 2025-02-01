@@ -24,7 +24,7 @@ export default function Table() {
   >([
     {
       accessorKey: 'thumbnail',
-      header: 'Thumbnail',
+      header: 'Vignette',
       visible: true,
       cell: ({ row }) => (
         <div className="flex items-center">
@@ -50,23 +50,23 @@ export default function Table() {
     },
     {
       accessorKey: 'is_published',
-      header: 'Is Published',
+      header: 'Publié',
       visible: true
     },
     {
       accessorKey: 'status',
-      header: 'Status',
+      header: 'Statut',
       visible: true
     },
 
     {
       accessorKey: 'price_after_discount',
-      header: 'Price',
+      header: 'Prix',
       visible: true
     },
     {
       accessorKey: 'discount',
-      header: 'Discount',
+      header: 'Remise',
       visible: true,
       cell: ({ row }) => (
         <span>
@@ -83,7 +83,7 @@ export default function Table() {
     },
     {
       accessorKey: 'created_at',
-      header: 'Created At',
+      header: 'Créé le',
       visible: true,
       cell: ({ row }) => (
         <div>{new Date(row.original.created_at ?? '').toLocaleString()}</div>
