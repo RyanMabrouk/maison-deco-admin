@@ -16,7 +16,6 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { SearchIcon } from 'lucide-react';
 import Pagination from '@mui/material/Pagination';
 import { Player } from '@lottiefiles/react-lottie-player';

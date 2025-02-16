@@ -289,14 +289,18 @@ export default function Form() {
           description: "Une erreur s'est produite lors de la modification."
         });
         toast({
-          description: error.message
+          description: error.message.includes('duplicate key')
+            ? 'Le slug existe déjà'
+            : error.message
         });
       } else {
         toast({
           description: "Une erreur s'est produite lors de l'ajout."
         });
         toast({
-          description: error.message
+          description: error.message.includes('duplicate key')
+            ? 'Le slug existe déjà'
+            : error.message
         });
       }
     }
