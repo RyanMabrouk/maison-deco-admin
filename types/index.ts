@@ -1,6 +1,5 @@
 import { UseQueryOptions } from '@tanstack/react-query';
 import { Database, Tables } from './database.types';
-import { Merge } from 'type-fest';
 
 // export interface NavItemWithChildren extends NavItem {
 //   items: NavItemWithChildren[];
@@ -49,22 +48,3 @@ export interface GenericOps<T extends IDbTableName> {
   };
   match?: Partial<{ [k in keyof Tables<T>]: Tables<T>[k] }>;
 }
-
-export type TypedDatabase = Merge<
-  Database,
-  {
-    public: {
-      Tables: {
-        products: {
-          Row: {
-            size: {
-              id: number;
-              name: string;
-              product_id: number;
-            };
-          };
-        };
-      };
-    };
-  }
->;
