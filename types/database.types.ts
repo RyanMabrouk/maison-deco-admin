@@ -378,11 +378,10 @@ export type Database = {
           discount: number
           discount_type: Database["public"]["Enums"]["discount_type"]
           is_published: boolean
-          price_after_discount: number
-          price_before_discount: number
+          price_after_discount: number | null
           rating: number | null
           rating_count: number
-          size: string[] | null
+          size: Json[] | null
           slug: string
           status: string
           stock: number
@@ -395,11 +394,10 @@ export type Database = {
           discount?: number
           discount_type: Database["public"]["Enums"]["discount_type"]
           is_published?: boolean
-          price_after_discount: number
-          price_before_discount: number
+          price_after_discount?: number | null
           rating?: number | null
           rating_count?: number
-          size?: string[] | null
+          size?: Json[] | null
           slug: string
           status: string
           stock: number
@@ -412,11 +410,10 @@ export type Database = {
           discount?: number
           discount_type?: Database["public"]["Enums"]["discount_type"]
           is_published?: boolean
-          price_after_discount?: number
-          price_before_discount?: number
+          price_after_discount?: number | null
           rating?: number | null
           rating_count?: number
-          size?: string[] | null
+          size?: Json[] | null
           slug?: string
           status?: string
           stock?: number

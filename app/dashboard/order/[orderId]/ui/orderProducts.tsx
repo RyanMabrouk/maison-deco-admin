@@ -19,6 +19,7 @@ export interface CartItem {
   thumbnail?: string;
   variation?: {
     color: string;
+    colors: string;
     images: string[];
   };
   size?: string;
@@ -57,6 +58,8 @@ export default function OrderProducts({
               <th className="min-w-[150px] px-2 py-2 text-center">Prix</th>
               <th className="min-w-[40px] px-2 py-2 text-center">Quantité</th>
               <th className="min-w-[100px] px-2 py-2 text-center">Total</th>
+              <th className="min-w-[100px] px-2 py-2 text-center">Couleur</th>
+              <th className="min-w-[100px] px-2 py-2 text-center">Taille</th>
             </tr>
           </thead>
           <tbody>
@@ -135,6 +138,10 @@ export default function OrderProducts({
                 <td className="hidden px-2 py-4 text-center sm:table-cell">
                   {product.quantity * product.price_after_discount} €
                 </td>
+                <td className="px-2 py-4 text-center ">
+                  {product.variation?.colors ?? product.variation?.color ?? ''}
+                </td>
+                <td className="px-2 py-4 text-center ">{product.size}</td>
               </tr>
             ))}
           </tbody>

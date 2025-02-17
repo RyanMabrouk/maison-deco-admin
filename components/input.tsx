@@ -1,6 +1,7 @@
 export default function Input({
   label,
   name,
+  value,
   type = 'text',
   placeholder,
   defaultValue,
@@ -11,6 +12,7 @@ export default function Input({
   defaultValue?: any;
   name: string;
   type?: string;
+  value?: any;
   placeholder?: string;
   disabled?: boolean;
   error?: string[];
@@ -25,6 +27,7 @@ export default function Input({
         placeholder={placeholder}
         defaultValue={defaultValue}
         disabled={disabled}
+        {...(value && { value })}
       />
       {error?.map((err, index) => (
         <p key={index} className="mt-2 text-red-500">

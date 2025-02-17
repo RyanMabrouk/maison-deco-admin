@@ -1,8 +1,8 @@
 'use client';
-import React, { useState, useRef, useEffect, use } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PictureUploader from './picture_uploader';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast, useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 import { v4 as uuidv4 } from 'uuid';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Input from '@/components/input';
@@ -21,7 +21,6 @@ import { deleteCategory } from '@/hooks/data/categories/delete';
 import { MultiSelect } from '@/components/multi-select';
 import { Button } from '@/components/ui/button';
 import { ColorPicker } from '@/components/color-picker';
-import { th } from 'date-fns/locale';
 import { createCategory } from '@/hooks/data/categories/post';
 import { z } from 'zod';
 
@@ -30,6 +29,10 @@ type ProductVariation = {
   images: string[];
   unsavedImages: File[];
   color: string;
+};
+type ProductSize = {
+  size: string;
+  price_before_discount: number;
 };
 
 export const languages: { lang: Enums<'languages_enum'>; label: string }[] = [
@@ -109,23 +112,36 @@ export default function Form() {
       const slug = formData.get('slug') as string;
 
       const productDataSchema = z.object({
-        size: z.array(z.string()).min(1, 'La taille est requise'),
+        size: z
+          .array(
+            z.object({
+              size: z.string().min(1, 'Le nom de la taille est requis'),
+              price_before_discount: z
+                .number()
+                .min(0, 'Le prix ne peut pas être négatif')
+            })
+          )
+          .min(1, 'Au moins une taille est requise'),
         thumbnail: z.string().min(1, 'La miniature est requise'),
         stock: z.number().min(0, 'Le stock ne peut pas être négatif'),
-        price_before_discount: z
-          .number()
-          .min(0, 'Le prix avant réduction ne peut pas être négatif'),
         discount: z.number().min(0, 'La réduction ne peut pas être négative'),
         is_published: z.boolean(),
         status: z.string().min(1, 'Le statut est requis').optional(),
         discount_type: z.enum(['percentage', 'amount'])
       });
+
+      const size_names = formData.getAll('size_name') as string[];
+      const size_prices = formData.getAll(
+        'size_price_before_discount'
+      ) as string[];
+
       const productData = {
-        size: formData.getAll('size') as string[],
+        size: size_names.map((size, index) => ({
+          size,
+          price_before_discount: Number(size_prices[index])
+        })),
         thumbnail: product_thumbnail ?? '',
         stock: Number(formData.get('stock')) || 0,
-        price_before_discount:
-          Number(formData.get('price_before_discount')) || 0,
         discount: Number(formData.get('discount')) || 0,
         is_published: formData.get('is_published') === 'true',
         status: String(formData.get('status')) || '',
@@ -214,10 +230,12 @@ export default function Form() {
             variations: variationsData as Json,
             price_after_discount:
               productData.discount_type === 'percentage'
-                ? productData.price_before_discount -
-                  (productData.price_before_discount * productData.discount) /
+                ? productData.size[0].price_before_discount -
+                  (productData.size[0].price_before_discount *
+                    productData.discount) /
                     100
-                : productData.price_before_discount - productData.discount
+                : productData.size[0].price_before_discount -
+                  productData.discount
           },
           translations: translationData.map((t) => ({
             ...t,
@@ -242,10 +260,12 @@ export default function Form() {
             variations: variationsData as Json,
             price_after_discount:
               productData.discount_type === 'percentage'
-                ? productData.price_before_discount -
-                  (productData.price_before_discount * productData.discount) /
+                ? productData.size[0].price_before_discount -
+                  (productData.size[0].price_before_discount *
+                    productData.discount) /
                     100
-                : productData.price_before_discount - productData.discount
+                : productData.size[0].price_before_discount -
+                  productData.discount
           },
           translations: translationData.map((t) => ({
             ...t,
@@ -388,25 +408,6 @@ export default function Form() {
             error={errors?.discount}
           />
         </div>
-        <div className="flex w-full flex-row gap-2">
-          <Input
-            label="Prix avant réduction"
-            name="price_before_discount"
-            type="number"
-            defaultValue={product?.data?.price_before_discount || ''}
-            placeholder="Entrez le prix avant réduction"
-            error={errors?.price_before_discount}
-          />
-          <Input
-            label="Prix après réduction"
-            name="price_after_discount"
-            type="number"
-            defaultValue={product?.data?.price_after_discount || ''}
-            error={errors?.price_after_discount}
-            disabled
-          />
-        </div>
-
         <Input
           label="Stock"
           name="stock"
@@ -523,21 +524,34 @@ function AddSizes() {
   const searchParams = useSearchParams();
   const productId = searchParams.get('productId');
   const { data: product } = useProductById(String(productId));
-  const [sizes, setSizes] = useState<string[]>(product?.data?.size || []);
+  const [sizes, setSizes] = useState<ProductSize[]>(
+    (product?.data?.size as ProductSize[]) || []
+  );
   const addSize = () => {
-    setSizes((prev) => [...prev, '']);
+    setSizes((prev) => [
+      ...prev,
+      {
+        size: '',
+        price_before_discount: 0
+      }
+    ]);
   };
   const removeSize = (index: number) => {
     setSizes((prev) => prev.filter((_, i) => i !== index));
   };
   const handleSizeChange = (index: number, value: string) => {
     const newSizes = [...sizes];
-    newSizes[index] = value;
+    newSizes[index] = { ...newSizes[index], size: value };
+    setSizes(newSizes);
+  };
+  const handlePriceChange = (index: number, value: number) => {
+    const newSizes = [...sizes];
+    newSizes[index] = { ...newSizes[index], price_before_discount: value };
     setSizes(newSizes);
   };
   useEffect(() => {
     if (product?.data?.size?.length) {
-      setSizes(product?.data?.size);
+      setSizes(product?.data?.size as ProductSize[]);
     }
   }, [product?.data?.size?.length]);
   return (
@@ -546,18 +560,52 @@ function AddSizes() {
       <div className="flex flex-wrap gap-2">
         {sizes.map((size, index) => (
           <div key={index} className="flex items-center gap-2">
-            <input
-              type="text"
-              name={`size`}
-              value={size}
-              onChange={(e) => handleSizeChange(index, e.target.value)}
-              className="w-32 rounded-sm border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-color2"
-              placeholder="Entrez la taille"
+            <div className="w-full">
+              <label className="block font-semibold ">
+                {'Nom de la taille'}
+              </label>
+              <input
+                type="text"
+                name={`size_name`}
+                value={size.size}
+                onChange={(e) => handleSizeChange(index, e.target.value)}
+                className="mt-2 h-11 w-full rounded-sm border border-gray-300 p-2 placeholder:text-sm focus:outline-none focus:ring-2 focus:ring-color2"
+                placeholder="Entrez la taille"
+              />
+            </div>
+            <div className="w-full">
+              <label className="block font-semibold ">
+                {'Prix avant réduction'}
+              </label>
+              <input
+                type="number"
+                name={`size_price_before_discount`}
+                value={size.price_before_discount}
+                onChange={(e) =>
+                  handlePriceChange(index, Number(e.target.value))
+                }
+                className="mt-2 h-11 w-full rounded-sm border border-gray-300 p-2 placeholder:text-sm focus:outline-none focus:ring-2 focus:ring-color2"
+                placeholder="Entrez le prix"
+              />
+            </div>
+            <Input
+              label="Prix après réduction"
+              name="price_after_discount"
+              type="number"
+              value={
+                product?.data?.discount_type === 'amount'
+                  ? size.price_before_discount - product?.data?.discount
+                  : size.price_before_discount -
+                    (size.price_before_discount *
+                      Number(product?.data?.discount ?? 0)) /
+                      100
+              }
+              disabled
             />
             <button
               type="button"
               onClick={() => removeSize(index)}
-              className="text-red-500 hover:text-red-700"
+              className="ml-2 mt-7 text-xl text-red-500 hover:text-red-700"
             >
               &times;
             </button>
