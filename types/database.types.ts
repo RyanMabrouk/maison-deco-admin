@@ -383,7 +383,7 @@ export type Database = {
           rating_count: number
           size: Json[] | null
           slug: string
-          status: string
+          status: string | null
           stock: number
           thumbnail: string
           updated_at: string | null
@@ -399,7 +399,7 @@ export type Database = {
           rating_count?: number
           size?: Json[] | null
           slug: string
-          status: string
+          status?: string | null
           stock: number
           thumbnail: string
           updated_at?: string | null
@@ -415,7 +415,7 @@ export type Database = {
           rating_count?: number
           size?: Json[] | null
           slug?: string
-          status?: string
+          status?: string | null
           stock?: number
           thumbnail?: string
           updated_at?: string | null

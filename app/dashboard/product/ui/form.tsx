@@ -146,7 +146,7 @@ export default function Form() {
         stock: Number(formData.get('stock')) || 0,
         discount: Number(formData.get('discount')) || 0,
         is_published: formData.get('is_published') === 'true',
-        status: String(formData.get('status')) || '',
+        status: String(formData.get('status')) || undefined,
         discount_type:
           (formData.get('discount_type') as Enums<'discount_type'>) ||
           'percentage'
@@ -183,6 +183,7 @@ export default function Form() {
       const parsedTranslations = translationData.map((t) =>
         translationSchema.safeParse(t)
       );
+
       const invalidTranslations = parsedTranslations.filter((t) => !t.success);
       if (invalidTranslations.length > 0) {
         invalidTranslations.forEach((t) => {
@@ -202,17 +203,16 @@ export default function Form() {
         variations.map(async (variation) => {
           const newImages = await Promise.all(
             variation.unsavedImages.map(async (image) => {
-              let uploadedImage = undefined;
               if (image.size > 0) {
                 const imgFormData = new FormData();
                 imgFormData.append('image', image);
-                uploadedImage = await uploadFile({
+                return await uploadFile({
                   formData: imgFormData,
                   name: 'image',
                   title: uuidv4()
                 });
               }
-              return uploadedImage;
+              return undefined;
             })
           );
           return {
