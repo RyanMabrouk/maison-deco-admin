@@ -112,6 +112,7 @@ export default function Form() {
       const slug = formData.get('slug') as string;
 
       const productDataSchema = z.object({
+        slug: z.string().min(1, 'Le slug est requis'),
         size: z
           .array(
             z.object({
@@ -136,6 +137,7 @@ export default function Form() {
       ) as string[];
 
       const productData = {
+        slug: productId ? productId : slug,
         size: size_names.map((size, index) => ({
           size,
           price_before_discount: Number(size_prices[index])
@@ -153,6 +155,12 @@ export default function Form() {
       const parsedData = productDataSchema.safeParse(productData);
       if (!parsedData.success) {
         setErrors((prev: any) => ({ ...prev, ...parsedData.error.errors }));
+        toast({
+          description: parsedData.error.errors.reduce(
+            (acc, error) => `${acc} ${error.message}`,
+            ''
+          )
+        });
         throw new Error('Validation échouée');
       }
 
@@ -179,7 +187,14 @@ export default function Form() {
       if (invalidTranslations.length > 0) {
         invalidTranslations.forEach((t) => {
           setErrors((prev: any) => ({ ...prev, ...t.error?.errors }));
+          toast({
+            description: t.error?.errors.reduce(
+              (acc, error) => `${acc} ${error.message}`,
+              ''
+            )
+          });
         });
+
         throw new Error('Validation échouée');
       }
 
@@ -253,20 +268,20 @@ export default function Form() {
         return productId;
       } else {
         const product_slug = slug.toLowerCase().replace(/\s+/g, '-');
+        const new_data = {
+          ...productData,
+          slug: product_slug,
+          variations: variationsData as Json,
+          price_after_discount:
+            productData.discount_type === 'percentage'
+              ? productData.size[0].price_before_discount -
+                (productData.size[0].price_before_discount *
+                  productData.discount) /
+                  100
+              : productData.size[0].price_before_discount - productData.discount
+        };
         const { error } = await createProduct({
-          payload: {
-            ...productData,
-            slug: product_slug,
-            variations: variationsData as Json,
-            price_after_discount:
-              productData.discount_type === 'percentage'
-                ? productData.size[0].price_before_discount -
-                  (productData.size[0].price_before_discount *
-                    productData.discount) /
-                    100
-                : productData.size[0].price_before_discount -
-                  productData.discount
-          },
+          payload: new_data,
           translations: translationData.map((t) => ({
             ...t,
             product_slug
@@ -741,7 +756,6 @@ function CategoriesSelect({
       });
     },
     onError: (error: any) => {
-      console.log('🚀 ~ error:', error);
       toast({
         description: "Une erreur s'est produite lors de la suppression."
       });
@@ -793,7 +807,12 @@ function CategoriesSelect({
       const parsedData = dataSchema.safeParse(data);
 
       if (!parsedData.success) {
-        throw new Error('Validation échouée');
+        throw new Error(
+          parsedData.error.errors.reduce(
+            (acc, error) => `${acc} ${error.message}`,
+            ''
+          )
+        );
       }
 
       const { error } = await createCategory(data);
