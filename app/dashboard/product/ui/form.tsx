@@ -274,10 +274,12 @@ export default function Form() {
           variations: variationsData as Json,
           price_after_discount:
             productData.discount_type === 'percentage'
-              ? productData.size[0].price_before_discount -
-                (productData.size[0].price_before_discount *
-                  productData.discount) /
-                  100
+              ? Math.floor(
+                  productData.size[0].price_before_discount -
+                    (productData.size[0].price_before_discount *
+                      productData.discount) /
+                      100
+                )
               : productData.size[0].price_before_discount - productData.discount
         };
         const { error } = await createProduct({

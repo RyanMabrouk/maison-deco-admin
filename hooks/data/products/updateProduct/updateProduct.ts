@@ -11,8 +11,6 @@ export async function updateProduct(data: {
     category_slug: string;
   }[];
 }) {
-  console.log('🚀 ~ categories_to_remove:', data.categories_to_remove);
-  console.log('🚀 ~ categories_to_add:', data.categories_to_add);
   const supabase = createClient();
 
   const [

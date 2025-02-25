@@ -1,20 +1,20 @@
-"use server";
-import { createClient } from "@/lib/supabase";
+'use client';
+import { createCsrClient } from '@/lib/client.supabase';
 export async function UploadToBucket({
   file,
   fileName,
-  bucketName,
+  bucketName
 }: {
   file: File;
   fileName: string;
   bucketName: string;
 }) {
-  const supabase = createClient();
+  const supabase = createCsrClient();
   const { data, error } = await supabase.storage
     .from(bucketName)
     .upload(fileName, file, {
-      cacheControl: "3600",
-      upsert: false,
+      cacheControl: '3600',
+      upsert: false
     });
   return { data, error };
 }

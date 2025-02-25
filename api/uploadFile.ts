@@ -1,4 +1,4 @@
-'use server';
+'use client';
 import { UploadToBucket } from './UploadToBucket';
 
 export async function uploadFile({
@@ -22,5 +22,9 @@ export async function uploadFile({
   if (error) {
     console.error(error);
   }
-  return (process.env.SUPABASE_STORAGE_LINK as string) + '/' + data?.fullPath;
+  return (
+    'https://yrqnorcdcaqyamvlfibt.supabase.co/storage/v1/object/public' +
+    '/' +
+    data?.fullPath
+  );
 }
